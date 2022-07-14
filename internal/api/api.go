@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/vidhi-k/expense_tracker_backend/cmd/migrator"
 	"github.com/vidhi-k/expense_tracker_backend/pkg/user"
+	"github.com/vidhi-k/expense_tracker_backend/pkg/user/repository"
 	"github.com/vidhi-k/expense_tracker_backend/tranport"
 	"github.com/vidhi-k/expense_tracker_backend/utl/config"
 	"github.com/vidhi-k/expense_tracker_backend/utl/server"
@@ -16,7 +17,7 @@ func Start() {
 
 	migrator.Migrate(db)
 
-	userService := user.InitService(db)
+	userService := user.InitService(db, repository.NewPostgresRepo())
 
 	ech := server.InitEcho()
 

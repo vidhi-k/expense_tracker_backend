@@ -20,5 +20,15 @@ func InitHTTPUserHandlers(userService types.UserService, v1 *echo.Group) {
 }
 
 func (h httpHandler) createUser(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "created user")
+	req := new(types.CreateUserRequest)
+	if err := ctx.Bind(req); err != nil {
+		return err
+	}
+
+	res, err := h.service.CreateUser(ctx.Request().Context(), req)
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, res)
 }
