@@ -2,9 +2,10 @@ package storage
 
 import (
 	"database/sql"
+	"log"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 func GetPostgresDB(url string) *gorm.DB {
