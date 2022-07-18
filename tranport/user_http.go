@@ -7,25 +7,20 @@ import (
 	"github.com/vidhi-k/expense_tracker_backend/types"
 )
 
-type httpHandler struct {
+type userHTTPHandler struct {
 	service types.UserService
 }
 
-func InitHTTPUserHandlers(userService types.UserService, v1 *echo.Group) {
-	h := httpHandler{service: userService}
+func InitUserHTTPHandlers(userService types.UserService, v1 *echo.Group) {
+	h := userHTTPHandler{service: userService}
 
 	userGroup := v1.Group("/users")
 
-	userGroup.POST("", h.createUser)
+	userGroup.GET("/:id", h.getUser)
 }
 
-func (h httpHandler) createUser(ctx echo.Context) error {
-	req := new(types.CreateUserRequest)
-	if err := ctx.Bind(req); err != nil {
-		return err
-	}
-
-	res, err := h.service.CreateUser(ctx.Request().Context(), req)
+func (h userHTTPHandler) getUser(ctx echo.Context) error {
+	res, err := h.service.GetUserByEmail(ctx.Request().Context(), ctx.Param("id"))
 	if err != nil {
 		return err
 	}
